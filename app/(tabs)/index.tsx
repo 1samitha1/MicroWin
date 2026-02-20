@@ -5,6 +5,7 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { useAppContext } from '@/contexts/AppContext';
+import { useColorScheme } from '@/hooks/use-color-scheme';
 import { isSameWeek } from 'date-fns';
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -13,6 +14,8 @@ export default function HomeScreen() {
   const { user, wins, targets, addWin, addTarget, completeTarget, removeTarget, logout } = useAppContext();
   const [winModalVisible, setWinModalVisible] = useState(false);
   const [targetModalVisible, setTargetModalVisible] = useState(false);
+  const colorScheme = useColorScheme();
+  const isDark = colorScheme === 'dark';
 
   // Weekly Reflection Logic
   const winsThisWeek = wins.filter(w => isSameWeek(new Date(w.timestamp), new Date()));
@@ -123,10 +126,10 @@ export default function HomeScreen() {
 
       <View style={styles.fabContainer}>
         <TouchableOpacity
-          style={[styles.fab, styles.fabSecondary]}
+          style={[styles.fab, styles.fabSecondary, isDark && styles.fabSecondaryDark]}
           onPress={() => setTargetModalVisible(true)}
         >
-          <IconSymbol name="target" size={24} color="#0a7ea4" />
+          <IconSymbol name="target" size={32} color="#ffffff" />
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -246,15 +249,13 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   fabSecondary: {
-    backgroundColor: '#FFFFFF',
-    width: 56,
-    height: 56,
-    borderRadius: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
+    backgroundColor: '#0a7ea4', // Use same solid blue so it aligns perfectly with primary button
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.2)',
+  },
+  fabSecondaryDark: {
+    backgroundColor: '#1F2937',
+    borderColor: '#374151',
   },
   fabPlus: {
     color: 'white',

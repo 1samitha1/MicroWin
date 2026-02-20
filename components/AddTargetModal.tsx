@@ -5,6 +5,7 @@ import {
     KeyboardAvoidingView,
     Modal,
     Platform,
+    ScrollView,
     StyleSheet,
     TextInput,
     TouchableOpacity,
@@ -12,7 +13,9 @@ import {
     View
 } from 'react-native';
 
+import { useColorScheme } from '@/hooks/use-color-scheme';
 import { ThemedText } from './themed-text';
+import { ThemedView } from './themed-view';
 import { IconSymbol } from './ui/icon-symbol';
 
 interface AddTargetModalProps {
@@ -26,6 +29,9 @@ export function AddTargetModal({
     onClose,
     onSaveTarget,
 }: AddTargetModalProps) {
+    const colorScheme = useColorScheme();
+    const isDark = colorScheme === 'dark';
+
     const [text, setText] = useState('');
     const [targetDate, setTargetDate] = useState(new Date());
     const [showDatePicker, setShowDatePicker] = useState(false);
@@ -75,9 +81,9 @@ export function AddTargetModal({
                             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                             style={styles.keyboardView}
                         >
-                            <View style={styles.modalContent}>
+                            <ThemedView style={styles.modalContent}>
                                 <View style={styles.header}>
-                                    <View style={styles.dragIndicator} />
+                                    <View style={[styles.dragIndicator, isDark && styles.dragIndicatorDark]} />
                                     <TouchableOpacity
                                         onPress={handleClose}
                                         style={styles.closeButton}
@@ -87,14 +93,18 @@ export function AddTargetModal({
                                     </TouchableOpacity>
                                 </View>
 
-                                <View style={styles.stepContainer}>
+                                <ScrollView
+                                    style={styles.stepContainer}
+                                    contentContainerStyle={{ paddingBottom: 24 }}
+                                    keyboardShouldPersistTaps="handled"
+                                >
                                     <ThemedText type="title" style={styles.title}>New Target</ThemedText>
                                     <ThemedText style={styles.subtitle}>What's your next small step?</ThemedText>
 
                                     <TextInput
-                                        style={styles.input}
+                                        style={[styles.input, isDark && styles.inputDark]}
                                         placeholder="I will... 🎯"
-                                        placeholderTextColor="#888"
+                                        placeholderTextColor={isDark ? "#aaa" : "#666"}
                                         value={text}
                                         onChangeText={setText}
                                         multiline
@@ -102,7 +112,7 @@ export function AddTargetModal({
                                         maxLength={120}
                                     />
 
-                                    <View style={styles.dateSelectorContainer}>
+                                    <View style={[styles.dateSelectorContainer, isDark && styles.inputDark]}>
                                         <ThemedText style={styles.dateLabel}>Target Date:</ThemedText>
                                         {Platform.OS === 'android' && (
                                             <TouchableOpacity
@@ -133,7 +143,7 @@ export function AddTargetModal({
                                             />
                                         )}
                                     </View>
-                                </View>
+                                </ScrollView>
 
                                 <View style={styles.footer}>
                                     <ThemedText style={styles.charCount}>
@@ -154,7 +164,7 @@ export function AddTargetModal({
                                         )}
                                     </TouchableOpacity>
                                 </View>
-                            </View>
+                            </ThemedView>
                         </KeyboardAvoidingView>
                     </TouchableWithoutFeedback>
                 </View>
@@ -173,7 +183,6 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     modalContent: {
-        backgroundColor: '#f8f9fa',
         borderTopLeftRadius: 32,
         borderTopRightRadius: 32,
         padding: 24,
@@ -191,6 +200,9 @@ const styles = StyleSheet.create({
         height: 4,
         backgroundColor: '#ddd',
         borderRadius: 2,
+    },
+    dragIndicatorDark: {
+        backgroundColor: '#444',
     },
     closeButton: {
         position: 'absolute',
@@ -221,6 +233,11 @@ const styles = StyleSheet.create({
         borderColor: '#E5E7EB',
         minHeight: 120,
         textAlignVertical: 'top',
+    },
+    inputDark: {
+        backgroundColor: '#1F2937',
+        color: '#F9FAFB',
+        borderColor: '#374151',
     },
     dateSelectorContainer: {
         flexDirection: 'row',

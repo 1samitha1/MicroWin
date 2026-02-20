@@ -1,6 +1,7 @@
+import { useColorScheme } from '@/hooks/use-color-scheme';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import React, { useState } from 'react';
-import { KeyboardAvoidingView, Modal, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { KeyboardAvoidingView, Modal, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { ThemedText } from './themed-text';
 import { ThemedView } from './themed-view';
 import { IconSymbol } from './ui/icon-symbol';
@@ -15,6 +16,9 @@ interface AddWinModalProps {
 const CATEGORIES = ['Personal', 'Work', 'Health', 'Other'];
 
 export function AddWinModal({ visible, onClose, onSaveWin, onSaveTarget }: AddWinModalProps) {
+    const colorScheme = useColorScheme();
+    const isDark = colorScheme === 'dark';
+
     const [step, setStep] = useState<'WIN' | 'TARGET'>('WIN');
     const [winText, setWinText] = useState('');
     const [category, setCategory] = useState('');
@@ -64,12 +68,16 @@ export function AddWinModal({ visible, onClose, onSaveWin, onSaveTarget }: AddWi
                     </TouchableOpacity>
 
                     {step === 'WIN' ? (
-                        <View style={styles.stepContainer}>
+                        <ScrollView
+                            style={styles.stepContainer}
+                            contentContainerStyle={{ paddingBottom: 24 }}
+                            keyboardShouldPersistTaps="handled"
+                        >
                             <ThemedText type="title" style={styles.title}>Log a Win</ThemedText>
                             <TextInput
-                                style={styles.input}
+                                style={[styles.input, isDark && styles.inputDark]}
                                 placeholder="What did you achieve? ✨ (max 80 chars)"
-                                placeholderTextColor="#888"
+                                placeholderTextColor={isDark ? "#aaa" : "#666"}
                                 value={winText}
                                 onChangeText={setWinText}
                                 maxLength={80}
@@ -95,21 +103,25 @@ export function AddWinModal({ visible, onClose, onSaveWin, onSaveTarget }: AddWi
                             >
                                 <Text style={styles.buttonText}>Save Win</Text>
                             </TouchableOpacity>
-                        </View>
+                        </ScrollView>
                     ) : (
-                        <View style={styles.stepContainer}>
+                        <ScrollView
+                            style={styles.stepContainer}
+                            contentContainerStyle={{ paddingBottom: 24 }}
+                            keyboardShouldPersistTaps="handled"
+                        >
                             <ThemedText type="title" style={styles.title}>What's next?</ThemedText>
                             <ThemedText style={styles.subtitle}>Set one small next step related to this win. (Optional)</ThemedText>
                             <TextInput
-                                style={styles.input}
+                                style={[styles.input, isDark && styles.inputDark]}
                                 placeholder="Next small step... 🎯 (max 60 chars)"
-                                placeholderTextColor="#888"
+                                placeholderTextColor={isDark ? "#aaa" : "#666"}
                                 value={targetText}
                                 onChangeText={setTargetText}
                                 maxLength={60}
                             />
 
-                            <View style={styles.dateSelectorContainer}>
+                            <View style={[styles.dateSelectorContainer, isDark && styles.inputDark]}>
                                 <ThemedText style={styles.dateLabel}>Target Date:</ThemedText>
                                 {Platform.OS === 'android' && (
                                     <TouchableOpacity
@@ -149,7 +161,7 @@ export function AddWinModal({ visible, onClose, onSaveWin, onSaveTarget }: AddWi
                                     <Text style={styles.buttonText}>Done</Text>
                                 </TouchableOpacity>
                             </View>
-                        </View>
+                        </ScrollView>
                     )}
                 </ThemedView>
             </KeyboardAvoidingView>
@@ -195,6 +207,11 @@ const styles = StyleSheet.create({
         borderColor: '#E5E7EB',
         minHeight: 120,
         textAlignVertical: 'top',
+    },
+    inputDark: {
+        backgroundColor: '#1F2937',
+        color: '#F9FAFB',
+        borderColor: '#374151',
     },
     categories: {
         flexDirection: 'row',
