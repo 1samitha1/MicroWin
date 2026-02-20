@@ -6,14 +6,16 @@ import { ThemedView } from '@/components/themed-view';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { useAppContext } from '@/contexts/AppContext';
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import { Target } from '@/types';
 import { isSameWeek } from 'date-fns';
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function HomeScreen() {
-  const { user, wins, targets, addWin, addTarget, completeTarget, removeTarget, logout } = useAppContext();
+  const { user, wins, targets, addWin, addTarget, editTarget, completeTarget, removeTarget, logout } = useAppContext();
   const [winModalVisible, setWinModalVisible] = useState(false);
   const [targetModalVisible, setTargetModalVisible] = useState(false);
+  const [editingTarget, setEditingTarget] = useState<Target | null>(null);
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
 
@@ -50,8 +52,27 @@ export default function HomeScreen() {
     await addWin(text, category);
   };
 
-  const handleSaveTarget = async (text: string, targetDate?: number) => {
-    await addTarget(text, targetDate);
+  const handleSaveTarget = async (text: string, targetDate?: number, id?: string) => {
+    if (id) {
+      // We are updating an existing target
+      await editTarget(id, text, targetDate);
+    } else {
+      // Creating a brand new target
+      await addTarget(text, targetDate);
+    }
+  };
+
+  const handleEditTarget = (id: string) => {
+    const target = targets.find(t => t.id === id);
+    if (target) {
+      setEditingTarget(target);
+      setTargetModalVisible(true);
+    }
+  };
+
+  const openNewTargetModal = () => {
+    setEditingTarget(null);
+    setTargetModalVisible(true);
   };
 
   const handleRestartTarget = async (id: string, newDate: number) => {
@@ -102,6 +123,7 @@ export default function HomeScreen() {
                 target={target}
                 onComplete={completeTarget}
                 onDismiss={removeTarget}
+                onEdit={handleEditTarget}
               />
             ))}
           </View>
@@ -117,6 +139,8 @@ export default function HomeScreen() {
                 target={target}
                 onComplete={completeTarget}
                 onDismiss={removeTarget}
+                onEdit={handleEditTarget}
+                onRestart={handleRestartTarget}
               />
             ))}
           </View>
@@ -127,7 +151,7 @@ export default function HomeScreen() {
       <View style={styles.fabContainer}>
         <TouchableOpacity
           style={[styles.fab, styles.fabSecondary, isDark && styles.fabSecondaryDark]}
-          onPress={() => setTargetModalVisible(true)}
+          onPress={openNewTargetModal}
         >
           <IconSymbol name="target" size={32} color="#ffffff" />
         </TouchableOpacity>
@@ -149,7 +173,11 @@ export default function HomeScreen() {
 
       <AddTargetModal
         visible={targetModalVisible}
-        onClose={() => setTargetModalVisible(false)}
+        initialTarget={editingTarget}
+        onClose={() => {
+          setTargetModalVisible(false);
+          setEditingTarget(null);
+        }}
         onSaveTarget={handleSaveTarget}
       />
     </ThemedView>

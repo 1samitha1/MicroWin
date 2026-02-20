@@ -15,7 +15,7 @@ interface AppContextType {
     removeWin: (id: string) => Promise<void>;
     addTarget: (text: string, targetDate?: number) => Promise<void>;
     completeTarget: (id: string, winText?: string) => Promise<void>;
-    editTarget: (id: string, text: string) => Promise<void>;
+    editTarget: (id: string, text: string, targetDate?: number) => Promise<void>;
     removeTarget: (id: string) => Promise<void>;
 }
 
@@ -121,8 +121,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         await addWin(winText || `Completed: ${target.text}`, undefined, id);
     };
 
-    const editTarget = async (id: string, text: string) => {
-        const updatedTargets = targets.map((t) => (t.id === id ? { ...t, text } : t));
+    const editTarget = async (id: string, text: string, targetDate?: number) => {
+        const updatedTargets = targets.map((t) => (t.id === id ? { ...t, text, targetDate } : t));
         setTargets(updatedTargets);
         await Storage.saveTargets(updatedTargets);
     };

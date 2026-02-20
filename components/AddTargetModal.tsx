@@ -14,18 +14,21 @@ import {
 } from 'react-native';
 
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import { Target } from '@/types';
 import { ThemedText } from './themed-text';
 import { ThemedView } from './themed-view';
 import { IconSymbol } from './ui/icon-symbol';
 
 interface AddTargetModalProps {
     visible: boolean;
+    initialTarget?: Target | null;
     onClose: () => void;
-    onSaveTarget: (text: string, date: number) => Promise<void>;
+    onSaveTarget: (text: string, date: number, id?: string) => Promise<void>;
 }
 
 export function AddTargetModal({
     visible,
+    initialTarget,
     onClose,
     onSaveTarget,
 }: AddTargetModalProps) {
@@ -37,17 +40,25 @@ export function AddTargetModal({
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
 
+    // Populate state when opening modal with an existing target
+    React.useEffect(() => {
+        if (visible) {
+            if (initialTarget) {
+                setText(initialTarget.text);
+                setTargetDate(initialTarget.targetDate ? new Date(initialTarget.targetDate) : new Date());
+            } else {
+                setText('');
+                setTargetDate(new Date());
+            }
+        }
+    }, [visible, initialTarget]);
+
     const handleSave = async () => {
         if (!text.trim() || isSaving) return;
 
         setIsSaving(true);
         try {
-            // Keep the selected Date but strip the time portion implicitly when saving
-            await onSaveTarget(text.trim(), targetDate.getTime());
-
-            // Reset state
-            setText('');
-            setTargetDate(new Date());
+            await onSaveTarget(text.trim(), targetDate.getTime(), initialTarget?.id);
             onClose();
         } finally {
             setIsSaving(false);
@@ -98,8 +109,12 @@ export function AddTargetModal({
                                     contentContainerStyle={{ paddingBottom: 24 }}
                                     keyboardShouldPersistTaps="handled"
                                 >
-                                    <ThemedText type="title" style={styles.title}>New Target</ThemedText>
-                                    <ThemedText style={styles.subtitle}>What's your next small step?</ThemedText>
+                                    <ThemedText type="title" style={styles.title}>
+                                        {initialTarget ? "Edit Target" : "New Target"}
+                                    </ThemedText>
+                                    <ThemedText style={styles.subtitle}>
+                                        {initialTarget ? "Update your target details." : "What's your next small step?"}
+                                    </ThemedText>
 
                                     <TextInput
                                         style={[styles.input, isDark && styles.inputDark]}
@@ -138,7 +153,7 @@ export function AddTargetModal({
                                                 is24Hour={true}
                                                 display={Platform.OS === 'ios' ? 'compact' : 'default'}
                                                 onChange={handleDateChange}
-                                                minimumDate={new Date()} // Prevent past dates for new targets
+                                                minimumDate={initialTarget ? undefined : new Date()} // Only restrict past dates for new targets
                                                 style={styles.iosDatePicker}
                                             />
                                         )}
@@ -160,7 +175,9 @@ export function AddTargetModal({
                                         {isSaving ? (
                                             <ActivityIndicator color="white" />
                                         ) : (
-                                            <ThemedText style={styles.saveButtonText}>Set Target</ThemedText>
+                                            <ThemedText style={styles.saveButtonText}>
+                                                {initialTarget ? "Update Target" : "Set Target"}
+                                            </ThemedText>
                                         )}
                                     </TouchableOpacity>
                                 </View>

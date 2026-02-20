@@ -10,10 +10,11 @@ interface TargetCardProps {
     isFailed?: boolean;
     onComplete: (id: string) => void;
     onDismiss: (id: string) => void;
+    onEdit?: (id: string) => void;
     onRestart?: (id: string, newDate: number) => void;
 }
 
-export function TargetCard({ target, isFailed, onComplete, onDismiss, onRestart }: TargetCardProps) {
+export function TargetCard({ target, isFailed, onComplete, onDismiss, onEdit, onRestart }: TargetCardProps) {
     const [showDatePicker, setShowDatePicker] = useState(false);
 
     if (!target) return null;
@@ -31,10 +32,30 @@ export function TargetCard({ target, isFailed, onComplete, onDismiss, onRestart 
                 <ThemedText style={[styles.title, isFailed && styles.titleFailed]}>
                     {isFailed ? "Failed Step" : "Your next small step"}
                 </ThemedText>
-                <TouchableOpacity onPress={() => onDismiss(target.id)} style={styles.iconButton}>
-                    <IconSymbol name="xmark" size={16} color="#888" />
-                </TouchableOpacity>
+                <View style={styles.headerActions}>
+                    {onEdit && (
+                        <TouchableOpacity onPress={() => onEdit(target.id)} style={styles.iconButton}>
+                            <IconSymbol name="pencil" size={16} color="#0a7ea4" />
+                        </TouchableOpacity>
+                    )}
+                    <TouchableOpacity onPress={() => onDismiss(target.id)} style={styles.iconButton}>
+                        <IconSymbol name="xmark" size={16} color="#888" />
+                    </TouchableOpacity>
+                </View>
             </View>
+
+            {target.targetDate && (
+                <View style={styles.dateContainer}>
+                    <IconSymbol name="calendar" size={14} color="#0a7ea4" />
+                    <ThemedText style={styles.dateText}>
+                        {new Date(target.targetDate).toLocaleDateString(undefined, {
+                            weekday: 'short',
+                            month: 'short',
+                            day: 'numeric'
+                        })}
+                    </ThemedText>
+                </View>
+            )}
 
             <ThemedText style={styles.targetText}>{target.text}</ThemedText>
 
@@ -85,7 +106,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 12,
+        marginBottom: 8,
+    },
+    headerActions: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 8,
     },
     title: {
         fontSize: 14,
@@ -96,6 +122,22 @@ const styles = StyleSheet.create({
     },
     iconButton: {
         padding: 4,
+    },
+    dateContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 6,
+        marginBottom: 8,
+        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+        alignSelf: 'flex-start',
+        paddingHorizontal: 8,
+        paddingVertical: 4,
+        borderRadius: 8,
+    },
+    dateText: {
+        fontSize: 12,
+        fontWeight: '600',
+        color: '#0a7ea4',
     },
     targetText: {
         fontSize: 18,
