@@ -1,4 +1,6 @@
-# Welcome to your Expo app 👋
+# Welcome to MicroWin
+
+This is a simple expo add developed using manual coding and Google Antigravaty. This app is created to explore the capabilities of vibe coding mix with manual coding process.
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
