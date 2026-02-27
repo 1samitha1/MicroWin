@@ -1,3 +1,4 @@
+import { Inter_400Regular, Inter_500Medium, Inter_600SemiBold, Inter_700Bold, useFonts } from '@expo-google-fonts/inter';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
@@ -14,7 +15,7 @@ export const unstable_settings = {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
-  const { user, isLoading, hasRegistered } = useAppContext();
+  const { currentUser, users, isLoading } = useAppContext();
   const segments = useSegments();
   const router = useRouter();
 
@@ -23,16 +24,16 @@ function RootLayoutNav() {
 
     const inAuthGroup = segments[0] === '(auth)';
 
-    if (!user && !inAuthGroup) {
-      if (hasRegistered) {
-        router.replace('/(auth)/login');
-      } else {
+    if (!currentUser && !inAuthGroup) {
+      if (users.length === 0) {
         router.replace('/(auth)/register');
+      } else {
+        router.replace('/(auth)/login');
       }
-    } else if (user && inAuthGroup) {
+    } else if (currentUser && inAuthGroup) {
       router.replace('/(tabs)');
     }
-  }, [user, isLoading, segments, hasRegistered]);
+  }, [currentUser, users, isLoading, segments, router]);
 
   if (isLoading) {
     return (
@@ -55,6 +56,17 @@ function RootLayoutNav() {
 }
 
 export default function RootLayout() {
+  const [fontsLoaded] = useFonts({
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold,
+    Inter_700Bold,
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
     <AppProvider>
       <RootLayoutNav />

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MicroWin Login</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13ec25",
+                        "background-light": "#f6f8f6",
+                        "background-dark": "#102212",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .ios-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex flex-col items-center justify-center p-4">
+<!-- Main Container (Mobile Form Factor) -->
+<div class="relative w-full max-w-[400px] h-[844px] bg-background-light dark:bg-background-dark overflow-hidden flex flex-col border border-slate-200 dark:border-primary/10 rounded-[3rem] shadow-2xl">
+<!-- Status Bar Mockup (iOS Style) -->
+<div class="w-full h-12 flex items-center justify-between px-8 pt-4">
+<span class="text-sm font-semibold">9:41</span>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm">signal_cellular_4_bar</span>
+<span class="material-symbols-outlined text-sm">wifi</span>
+<span class="material-symbols-outlined text-sm">battery_full</span>
+</div>
+</div>
+<!-- Hero Section with Soft Gradient -->
+<div class="relative px-6 pt-10 pb-6">
+<div class="absolute inset-0 bg-gradient-to-b from-primary/10 to-transparent pointer-events-none"></div>
+<div class="relative z-10 flex flex-col items-center">
+<div class="w-20 h-20 bg-primary/20 rounded-xl flex items-center justify-center mb-8 border border-primary/30">
+<span class="material-symbols-outlined text-primary text-5xl">emoji_events</span>
+</div>
+<h1 class="text-3xl font-bold tracking-tight text-center mb-2">Welcome to MicroWin</h1>
+<p class="text-slate-600 dark:text-slate-400 text-center text-sm px-8">
+                    Track your small wins, celebrate your progress, and improve your daily well-being.
+                </p>
+</div>
+</div>
+<!-- Form Section -->
+<div class="flex-1 px-8 pt-10 flex flex-col gap-6">
+<div class="space-y-4">
+<label class="block">
+<span class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1 mb-2 block">Full Name</span>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">person</span>
+<input class="w-full h-14 bg-slate-100 dark:bg-primary/5 border border-slate-200 dark:border-primary/20 rounded-2xl pl-12 pr-4 text-base focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all duration-200 outline-none" placeholder="e.g. Alex Rivera" type="text"/>
+</div>
+</label>
+<label class="block">
+<span class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1 mb-2 block">Username</span>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">alternate_email</span>
+<input class="w-full h-14 bg-slate-100 dark:bg-primary/5 border border-slate-200 dark:border-primary/20 rounded-2xl pl-12 pr-4 text-base focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all duration-200 outline-none" placeholder="alex_wins" type="text"/>
+</div>
+</label>
+</div>
+<!-- Hint Text -->
+<p class="text-xs text-center text-slate-500 dark:text-slate-400 italic">
+                No password needed. Simple and mindful.
+            </p>
+</div>
+<!-- Footer / Action Section -->
+<div class="px-8 pb-12 flex flex-col gap-4">
+<button class="w-full h-16 bg-primary hover:bg-primary/90 text-background-dark font-bold text-lg rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 ios-shadow">
+<span>Get Started</span>
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<div class="flex items-center justify-center gap-2">
+<div class="h-[1px] flex-1 bg-slate-200 dark:bg-primary/10"></div>
+<span class="text-[10px] uppercase font-bold tracking-[0.2em] text-slate-400">Your journey starts here</span>
+<div class="h-[1px] flex-1 bg-slate-200 dark:bg-primary/10"></div>
+</div>
+</div>
+<!-- Abstract Visual Accent -->
+<div class="absolute -bottom-24 -left-24 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+<div class="absolute -top-24 -right-24 w-64 h-64 bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
+<!-- Home Indicator (iOS) -->
+<div class="w-full h-8 flex justify-center items-end pb-2">
+<div class="w-32 h-1.5 bg-slate-300 dark:bg-slate-700 rounded-full"></div>
+</div>
+</div>
+</body></html>

@@ -3,40 +3,41 @@ import { isBefore, subMonths, subWeeks } from 'date-fns';
 import { Target, User, Win } from '../types';
 
 const KEYS = {
-    USER: 'microwin_user',
+    USERS: 'microwin_users',
+    CURRENT_USER: 'microwin_current_user',
     WINS: 'microwin_wins',
     TARGETS: 'microwin_targets',
-    HAS_REGISTERED: 'microwin_has_registered'
 };
 
 export const Storage = {
     // Has Registered Flag
-    async getHasRegistered(): Promise<boolean> {
+    // Users list
+    async getUsers(): Promise<User[]> {
         try {
-            const data = await AsyncStorage.getItem(KEYS.HAS_REGISTERED);
-            return data === 'true';
+            const data = await AsyncStorage.getItem(KEYS.USERS);
+            return data ? JSON.parse(data) : [];
         } catch {
-            return false;
+            return [];
         }
     },
-    async setHasRegistered(): Promise<void> {
-        await AsyncStorage.setItem(KEYS.HAS_REGISTERED, 'true');
+    async saveUsers(users: User[]): Promise<void> {
+        await AsyncStorage.setItem(KEYS.USERS, JSON.stringify(users));
     },
 
-    // User
-    async getUser(): Promise<User | null> {
+    // Current Session
+    async getCurrentUser(): Promise<User | null> {
         try {
-            const data = await AsyncStorage.getItem(KEYS.USER);
+            const data = await AsyncStorage.getItem(KEYS.CURRENT_USER);
             return data ? JSON.parse(data) : null;
         } catch {
             return null;
         }
     },
-    async saveUser(user: User): Promise<void> {
-        await AsyncStorage.setItem(KEYS.USER, JSON.stringify(user));
+    async saveCurrentUser(user: User): Promise<void> {
+        await AsyncStorage.setItem(KEYS.CURRENT_USER, JSON.stringify(user));
     },
     async logoutUser(): Promise<void> {
-        await AsyncStorage.removeItem(KEYS.USER);
+        await AsyncStorage.removeItem(KEYS.CURRENT_USER);
     },
 
     // Wins

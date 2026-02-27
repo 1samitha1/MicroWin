@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MicroWin Home Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13ec25",
+                        "background-light": "#f6f8f6",
+                        "background-dark": "#102212",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .filled-icon {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden max-w-md mx-auto border-x border-primary/10">
+<!-- Header -->
+<header class="flex items-center bg-background-light dark:bg-background-dark p-4 sticky top-0 z-10">
+<div class="flex size-10 shrink-0 items-center overflow-hidden rounded-full border border-primary/20">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="Close up portrait of a smiling person" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0znDA176c9ipzl4T41K-6yNtF4poJgKSGruvMmPn6-bhm5YLPwnTR-OdBrcnGmoE26DRMSUvKPR5kfiYyTd05-zFrAOo8ktQaSqUJtixM7Yol8nHtYIc8PN7i-N1PXGszIOOwwEuIruVg54TOskDBwEmgxqxlQSXAL1H3ruZGug-LigKsaCYPC0C5zshigpRYy1g1JYwEMSTGQx20_u4yO2_Zd_uQ5VpkDRjl49wDRUj5R-tya1goPvtjNknHZ68QcLjSpBMVrbtT"/>
+</div>
+<h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-tight flex-1 text-center">MicroWin</h2>
+<div class="flex w-10 items-center justify-end">
+<button class="flex items-center justify-center size-10 rounded-full bg-primary/10 text-primary">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</header>
+<!-- Hero Stats -->
+<div class="px-4 py-2">
+<div class="bg-primary/10 rounded-xl p-6 flex flex-col items-center text-center border border-primary/20">
+<span class="text-primary text-sm font-semibold uppercase tracking-wider mb-2">Weekly Progress</span>
+<h1 class="text-slate-900 dark:text-slate-100 text-4xl font-bold mb-1 tracking-tight">12 Wins</h1>
+<p class="text-slate-600 dark:text-slate-400 text-sm">You're doing great, Alex!</p>
+<div class="w-full bg-primary/20 h-2 rounded-full mt-4 overflow-hidden">
+<div class="bg-primary h-full w-[70%] rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- Quick Actions -->
+<div class="px-4 py-6">
+<div class="flex gap-4">
+<button class="flex-1 flex flex-col items-center justify-center gap-3 bg-primary py-6 rounded-xl shadow-lg shadow-primary/20 active:scale-95 transition-transform">
+<div class="size-12 rounded-full bg-white/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-background-dark font-bold">add_circle</span>
+</div>
+<span class="text-background-dark font-bold">Add a Win</span>
+</button>
+<button class="flex-1 flex flex-col items-center justify-center gap-3 bg-slate-200 dark:bg-primary/20 py-6 rounded-xl border border-primary/30 active:scale-95 transition-transform">
+<div class="size-12 rounded-full bg-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary font-bold">target</span>
+</div>
+<span class="text-slate-900 dark:text-primary font-bold">Add Target</span>
+</button>
+</div>
+</div>
+<!-- Recent Activity Feed -->
+<div class="flex-1 px-4 pb-24">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-xl font-bold tracking-tight">Recent Activity</h3>
+<button class="text-primary text-sm font-semibold">See All</button>
+</div>
+<!-- Activity Cards -->
+<div class="space-y-4">
+<!-- Win 1 -->
+<div class="bg-white dark:bg-slate-900/50 p-4 rounded-xl border border-slate-200 dark:border-primary/10 flex gap-4 items-start">
+<div class="size-10 rounded-full bg-primary/20 flex shrink-0 items-center justify-center">
+<span class="material-symbols-outlined text-primary text-xl filled-icon">celebration</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h4 class="font-bold text-slate-900 dark:text-slate-100 leading-none mb-1">Drank 2L of water</h4>
+<span class="text-[10px] text-slate-500 font-medium">2H AGO</span>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-400">Target: Hydration Habit • Day 5 streak!</p>
+</div>
+</div>
+<!-- Win 2 -->
+<div class="bg-white dark:bg-slate-900/50 p-4 rounded-xl border border-slate-200 dark:border-primary/10 flex gap-4 items-start">
+<div class="size-10 rounded-full bg-blue-500/20 flex shrink-0 items-center justify-center">
+<span class="material-symbols-outlined text-blue-400 text-xl filled-icon">self_improvement</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h4 class="font-bold text-slate-900 dark:text-slate-100 leading-none mb-1">Morning Meditation</h4>
+<span class="text-[10px] text-slate-500 font-medium">5H AGO</span>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-400">10 minutes of mindfulness before work.</p>
+</div>
+</div>
+<!-- Win 3 -->
+<div class="bg-white dark:bg-slate-900/50 p-4 rounded-xl border border-slate-200 dark:border-primary/10 flex gap-4 items-start">
+<div class="size-10 rounded-full bg-orange-500/20 flex shrink-0 items-center justify-center">
+<span class="material-symbols-outlined text-orange-400 text-xl filled-icon">menu_book</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h4 class="font-bold text-slate-900 dark:text-slate-100 leading-none mb-1">Read 10 pages</h4>
+<span class="text-[10px] text-slate-500 font-medium">YESTERDAY</span>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-400">Finally finished Chapter 4 of 'Atomic Habits'.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md border-t border-primary/20 bg-background-light dark:bg-[#19331b] px-4 pb-6 pt-3 flex justify-around items-end">
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined filled-icon">home</span>
+<p class="text-[10px] font-bold uppercase tracking-widest">Home</p>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-500 dark:text-primary/60" href="#">
+<span class="material-symbols-outlined">track_changes</span>
+<p class="text-[10px] font-bold uppercase tracking-widest">Targets</p>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-500 dark:text-primary/60" href="#">
+<span class="material-symbols-outlined">insights</span>
+<p class="text-[10px] font-bold uppercase tracking-widest">Insights</p>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-500 dark:text-primary/60" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-[10px] font-bold uppercase tracking-widest">Settings</p>
+</a>
+</nav>
+</div>
+</body></html>

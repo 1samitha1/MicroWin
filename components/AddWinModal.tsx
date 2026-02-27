@@ -110,7 +110,7 @@ export function AddWinModal({ visible, onClose, onSaveWin, onSaveTarget }: AddWi
                             contentContainerStyle={{ paddingBottom: 24 }}
                             keyboardShouldPersistTaps="handled"
                         >
-                            <ThemedText type="title" style={styles.title}>What's next?</ThemedText>
+                            <ThemedText type="title" style={styles.title}>What&apos;s next?</ThemedText>
                             <ThemedText style={styles.subtitle}>Set one small next step related to this win. (Optional)</ThemedText>
                             <TextInput
                                 style={[styles.input, isDark && styles.inputDark]}
@@ -135,7 +135,7 @@ export function AddWinModal({ visible, onClose, onSaveWin, onSaveTarget }: AddWi
                                                 day: 'numeric'
                                             })}
                                         </ThemedText>
-                                        <IconSymbol name="calendar" size={16} color="#0a7ea4" />
+                                        <IconSymbol name="calendar" size={16} color="#22c55e" />
                                     </TouchableOpacity>
                                 )}
 
@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(150, 150, 150, 0.2)',
     },
     categoryPillActive: {
-        backgroundColor: '#0a7ea4',
+        backgroundColor: '#22c55e',
     },
     categoryText: {
         color: '#888',
@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
         color: '#fff',
     },
     button: {
-        backgroundColor: '#0a7ea4',
+        backgroundColor: '#22c55e',
         padding: 16,
         borderRadius: 16,
         alignItems: 'center',
@@ -287,13 +287,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         gap: 8,
-        backgroundColor: 'rgba(10, 126, 164, 0.1)',
+        backgroundColor: 'rgba(34, 197, 94, 0.1)',
         paddingHorizontal: 16,
         paddingVertical: 8,
         borderRadius: 12,
     },
     datePickerButtonText: {
-        color: '#0a7ea4',
+        color: '#22c55e',
         fontSize: 16,
         fontWeight: '600',
     },

@@ -5,32 +5,34 @@ import { Link, useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
-export default function RegisterScreen() {
-    const [name, setName] = useState('');
+export default function ForgotPasswordScreen() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const { register } = useAppContext();
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const { resetPassword } = useAppContext();
     const router = useRouter();
     const colorScheme = useColorScheme();
     const isDark = colorScheme === 'dark';
 
-    const handleRegister = async () => {
-        if (!name || !username || !password) {
+    const handleReset = async () => {
+        if (!username || !password || !confirmPassword) {
             Alert.alert("Error", "Please fill out all fields.");
             return;
         }
 
-        const success = await register({
-            id: Date.now().toString() + Math.random().toString(36).substring(2, 9),
-            name,
-            username,
-            password
-        });
+        if (password !== confirmPassword) {
+            Alert.alert("Error", "Passwords do not match.");
+            return;
+        }
+
+        const success = await resetPassword(username, password);
 
         if (success) {
-            router.replace('/(tabs)');
+            Alert.alert("Success", "Password has been successfully reset.", [
+                { text: "OK", onPress: () => router.replace('/(auth)/login') }
+            ]);
         } else {
-            Alert.alert("Registration Failed", "Username already exists. Please choose a different username.");
+            Alert.alert("Reset Failed", "Username not found.");
         }
     };
 
@@ -47,32 +49,17 @@ export default function RegisterScreen() {
                     <View style={styles.formContainer}>
                         <View style={styles.heroSection}>
                             <View style={styles.iconBox}>
-                                <Ionicons name="sparkles-outline" size={48} color="#22c55e" />
+                                <Ionicons name="key-outline" size={48} color="#22c55e" />
                             </View>
                             <Text style={[styles.title, isDark ? styles.darkText : styles.lightText]}>
-                                Create an Account
+                                Reset Password
                             </Text>
                             <Text style={[styles.subtitle, isDark ? styles.darkSubText : styles.lightSubText]}>
-                                Start your journey of micro wins.
+                                Set a new password for your account.
                             </Text>
                         </View>
 
                         <View style={styles.formSection}>
-                            <View style={styles.inputGroup}>
-                                <Text style={[styles.label, isDark ? styles.darkSubText : styles.lightSubText]}>FULL NAME</Text>
-                                <View style={styles.inputWrapper}>
-                                    <Ionicons name="person-outline" size={20} color={isDark ? '#9BA1A6' : '#687076'} style={styles.inputIcon} />
-                                    <TextInput
-                                        style={[styles.input, isDark ? styles.darkInput : styles.lightInput, isDark ? styles.darkText : styles.lightText]}
-                                        placeholder="e.g. Alex Rivera"
-                                        placeholderTextColor={isDark ? '#555' : '#888'}
-                                        value={name}
-                                        onChangeText={setName}
-                                        autoCapitalize="words"
-                                    />
-                                </View>
-                            </View>
-
                             <View style={styles.inputGroup}>
                                 <Text style={[styles.label, isDark ? styles.darkSubText : styles.lightSubText]}>USERNAME</Text>
                                 <View style={styles.inputWrapper}>
@@ -89,7 +76,7 @@ export default function RegisterScreen() {
                             </View>
 
                             <View style={styles.inputGroup}>
-                                <Text style={[styles.label, isDark ? styles.darkSubText : styles.lightSubText]}>PASSWORD</Text>
+                                <Text style={[styles.label, isDark ? styles.darkSubText : styles.lightSubText]}>NEW PASSWORD</Text>
                                 <View style={styles.inputWrapper}>
                                     <Ionicons name="lock-closed-outline" size={20} color={isDark ? '#9BA1A6' : '#687076'} style={styles.inputIcon} />
                                     <TextInput
@@ -102,11 +89,26 @@ export default function RegisterScreen() {
                                     />
                                 </View>
                             </View>
+
+                            <View style={styles.inputGroup}>
+                                <Text style={[styles.label, isDark ? styles.darkSubText : styles.lightSubText]}>CONFIRM PASSWORD</Text>
+                                <View style={styles.inputWrapper}>
+                                    <Ionicons name="lock-closed-outline" size={20} color={isDark ? '#9BA1A6' : '#687076'} style={styles.inputIcon} />
+                                    <TextInput
+                                        style={[styles.input, isDark ? styles.darkInput : styles.lightInput, isDark ? styles.darkText : styles.lightText]}
+                                        placeholder="••••••••"
+                                        placeholderTextColor={isDark ? '#555' : '#888'}
+                                        value={confirmPassword}
+                                        onChangeText={setConfirmPassword}
+                                        secureTextEntry
+                                    />
+                                </View>
+                            </View>
                         </View>
 
                         <View style={styles.footerSection}>
-                            <TouchableOpacity style={styles.button} onPress={handleRegister}>
-                                <Text style={styles.buttonText}>Get Started</Text>
+                            <TouchableOpacity style={styles.button} onPress={handleReset}>
+                                <Text style={styles.buttonText}>Reset Password</Text>
                                 <Ionicons name="arrow-forward" size={24} color="#102212" />
                             </TouchableOpacity>
 
@@ -119,7 +121,7 @@ export default function RegisterScreen() {
                             <Link href="/(auth)/login" asChild>
                                 <TouchableOpacity style={styles.secondaryButton}>
                                     <Text style={[styles.secondaryButtonText, isDark ? styles.darkText : styles.lightText]}>
-                                        I already have an account
+                                        Back to Log In
                                     </Text>
                                 </TouchableOpacity>
                             </Link>

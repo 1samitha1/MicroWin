@@ -1,4 +1,5 @@
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { BlurView } from 'expo-blur';
 import React, { useState } from 'react';
 import {
     ActivityIndicator,
@@ -7,17 +8,16 @@ import {
     Platform,
     ScrollView,
     StyleSheet,
+    Text,
     TextInput,
     TouchableOpacity,
-    TouchableWithoutFeedback,
-    View
+    View,
 } from 'react-native';
 
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { Target } from '@/types';
-import { ThemedText } from './themed-text';
-import { ThemedView } from './themed-view';
-import { IconSymbol } from './ui/icon-symbol';
+import { Ionicons } from '@expo/vector-icons';
+import { format } from 'date-fns';
 
 interface AddTargetModalProps {
     visible: boolean;
@@ -82,238 +82,155 @@ export function AddTargetModal({
         <Modal
             visible={visible}
             animationType="slide"
-            transparent={true}
+            transparent={false}
             onRequestClose={handleClose}
         >
-            <TouchableWithoutFeedback onPress={handleClose}>
-                <View style={styles.overlay}>
-                    <TouchableWithoutFeedback>
-                        <KeyboardAvoidingView
-                            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                            style={styles.keyboardView}
-                        >
-                            <ThemedView style={styles.modalContent}>
-                                <View style={styles.header}>
-                                    <View style={[styles.dragIndicator, isDark && styles.dragIndicatorDark]} />
-                                    <TouchableOpacity
-                                        onPress={handleClose}
-                                        style={styles.closeButton}
-                                        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                                    >
-                                        <IconSymbol name="xmark" size={20} color="#888" />
-                                    </TouchableOpacity>
+            <View style={[styles.container, isDark ? styles.darkBg : styles.lightBg]}>
+                {/* Header */}
+                <BlurView intensity={isDark ? 30 : 80} tint={isDark ? "dark" : "light"} style={styles.header}>
+                    <TouchableOpacity onPress={handleClose} style={styles.headerBtn}>
+                        <Ionicons name="close" size={24} color={isDark ? '#94a3b8' : '#64748b'} />
+                    </TouchableOpacity>
+                    <Text style={[styles.headerTitle, isDark ? styles.darkText : styles.lightText]}>
+                        {initialTarget ? "Edit Target" : "Add New Target"}
+                    </Text>
+                    <TouchableOpacity onPress={handleSave} disabled={!text.trim() || isSaving} style={styles.headerBtnRight}>
+                        <Text style={[styles.headerSave, (!text.trim() || isSaving) && styles.disabledText]}>Save</Text>
+                    </TouchableOpacity>
+                </BlurView>
+
+                <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.keyboardView}>
+                    <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
+
+                        <View style={styles.introSection}>
+                            <Text style={[styles.title, isDark ? styles.darkText : styles.lightText]}>
+                                What&apos;s your next <Text style={styles.primaryText}>MicroWin</Text>?
+                            </Text>
+                            <Text style={[styles.subtitle, isDark ? styles.darkSubText : styles.lightSubText]}>
+                                Small steps lead to big changes.
+                            </Text>
+                        </View>
+
+                        <View style={[styles.card, isDark ? styles.darkCard : styles.lightCard]}>
+                            <Text style={[styles.label, isDark ? styles.darkSubText : styles.lightSubText]}>TARGET NAME</Text>
+                            <TextInput
+                                style={[styles.input, isDark ? styles.inputDark : styles.inputLight]}
+                                placeholder="e.g., Morning Walk"
+                                placeholderTextColor={isDark ? "#475569" : "#94a3b8"}
+                                value={text}
+                                onChangeText={setText}
+                                returnKeyType="done"
+                            />
+                        </View>
+
+                        <View style={[styles.card, isDark ? styles.darkCard : styles.lightCard]}>
+                            <View style={styles.dateHeader}>
+                                <Text style={[styles.label, isDark ? styles.darkSubText : styles.lightSubText]}>SET DEADLINE</Text>
+                                <View style={styles.datePreview}>
+                                    <Ionicons name="calendar-outline" size={16} color="#22c55e" />
+                                    <Text style={styles.datePreviewText}>{format(targetDate, 'MMMM yyyy')}</Text>
                                 </View>
+                            </View>
 
-                                <ScrollView
-                                    style={styles.stepContainer}
-                                    contentContainerStyle={{ paddingBottom: 24 }}
-                                    keyboardShouldPersistTaps="handled"
-                                >
-                                    <ThemedText type="title" style={styles.title}>
-                                        {initialTarget ? "Edit Target" : "New Target"}
-                                    </ThemedText>
-                                    <ThemedText style={styles.subtitle}>
-                                        {initialTarget ? "Update your target details." : "What's your next small step?"}
-                                    </ThemedText>
+                            {Platform.OS === 'android' && (
+                                <TouchableOpacity style={styles.datePickerButton} onPress={() => setShowDatePicker(true)}>
+                                    <Text style={styles.datePickerButtonText}>
+                                        {format(targetDate, 'EEE, MMM d, yyyy')}
+                                    </Text>
+                                    <Ionicons name="calendar" size={20} color="#22c55e" />
+                                </TouchableOpacity>
+                            )}
 
-                                    <TextInput
-                                        style={[styles.input, isDark && styles.inputDark]}
-                                        placeholder="I will... 🎯"
-                                        placeholderTextColor={isDark ? "#aaa" : "#666"}
-                                        value={text}
-                                        onChangeText={setText}
-                                        multiline
-                                        autoFocus
-                                        maxLength={120}
-                                    />
+                            {(showDatePicker || Platform.OS === 'ios') && (
+                                <DateTimePicker
+                                    testID="dateTimePicker"
+                                    value={targetDate}
+                                    mode="date"
+                                    is24Hour={true}
+                                    display={Platform.OS === 'ios' ? 'inline' : 'default'}
+                                    onChange={handleDateChange}
+                                    minimumDate={initialTarget ? undefined : new Date()}
+                                    themeVariant={isDark ? "dark" : "light"}
+                                />
+                            )}
+                        </View>
 
-                                    <View style={[styles.dateSelectorContainer, isDark && styles.inputDark]}>
-                                        <ThemedText style={styles.dateLabel}>Target Date:</ThemedText>
-                                        {Platform.OS === 'android' && (
-                                            <TouchableOpacity
-                                                style={styles.datePickerButton}
-                                                onPress={() => setShowDatePicker(true)}
-                                            >
-                                                <ThemedText style={styles.datePickerButtonText}>
-                                                    {targetDate.toLocaleDateString(undefined, {
-                                                        weekday: 'short',
-                                                        month: 'short',
-                                                        day: 'numeric'
-                                                    })}
-                                                </ThemedText>
-                                                <IconSymbol name="calendar" size={16} color="#0a7ea4" />
-                                            </TouchableOpacity>
-                                        )}
+                        <View style={styles.bottomActions}>
+                            <TouchableOpacity
+                                style={[styles.primaryBtn, (!text.trim() || isSaving) && styles.primaryBtnDisabled]}
+                                onPress={handleSave}
+                                disabled={!text.trim() || isSaving}
+                            >
+                                {isSaving ? (
+                                    <ActivityIndicator color={isDark ? "#102212" : "#f6f8f6"} />
+                                ) : (
+                                    <Text style={styles.primaryBtnText}>{initialTarget ? "Update Target" : "Create Target"}</Text>
+                                )}
+                            </TouchableOpacity>
+                            <TouchableOpacity style={[styles.secondaryBtn, isDark ? styles.secondaryBtnDark : styles.secondaryBtnLight]} onPress={handleClose}>
+                                <Text style={[styles.secondaryBtnText, isDark ? styles.darkSubText : styles.lightSubText]}>Cancel</Text>
+                            </TouchableOpacity>
+                        </View>
 
-                                        {(showDatePicker || Platform.OS === 'ios') && (
-                                            <DateTimePicker
-                                                testID="dateTimePicker"
-                                                value={targetDate}
-                                                mode="date"
-                                                is24Hour={true}
-                                                display={Platform.OS === 'ios' ? 'compact' : 'default'}
-                                                onChange={handleDateChange}
-                                                minimumDate={initialTarget ? undefined : new Date()} // Only restrict past dates for new targets
-                                                style={styles.iosDatePicker}
-                                            />
-                                        )}
-                                    </View>
-                                </ScrollView>
-
-                                <View style={styles.footer}>
-                                    <ThemedText style={styles.charCount}>
-                                        {text.length}/120
-                                    </ThemedText>
-                                    <TouchableOpacity
-                                        style={[
-                                            styles.saveButton,
-                                            !text.trim() && styles.saveButtonDisabled
-                                        ]}
-                                        onPress={handleSave}
-                                        disabled={!text.trim() || isSaving}
-                                    >
-                                        {isSaving ? (
-                                            <ActivityIndicator color="white" />
-                                        ) : (
-                                            <ThemedText style={styles.saveButtonText}>
-                                                {initialTarget ? "Update Target" : "Set Target"}
-                                            </ThemedText>
-                                        )}
-                                    </TouchableOpacity>
-                                </View>
-                            </ThemedView>
-                        </KeyboardAvoidingView>
-                    </TouchableWithoutFeedback>
-                </View>
-            </TouchableWithoutFeedback>
+                    </ScrollView>
+                </KeyboardAvoidingView>
+            </View>
         </Modal>
     );
 }
 
 const styles = StyleSheet.create({
-    overlay: {
-        flex: 1,
-        backgroundColor: 'rgba(0, 0, 0, 0.6)',
-        justifyContent: 'flex-end',
-    },
-    keyboardView: {
-        width: '100%',
-    },
-    modalContent: {
-        borderTopLeftRadius: 32,
-        borderTopRightRadius: 32,
-        padding: 24,
-        paddingTop: 12,
-        minHeight: '60%',
-        maxHeight: '90%',
-    },
+    container: { flex: 1 },
+    lightBg: { backgroundColor: '#f6f8f6' },
+    darkBg: { backgroundColor: '#102212' },
+    lightText: { color: '#0f172a' },
+    darkText: { color: '#f8fafc' },
+    lightSubText: { color: '#64748b' },
+    darkSubText: { color: '#94a3b8' },
+    primaryText: { color: '#22c55e' },
+    disabledText: { opacity: 0.5 },
+
     header: {
-        alignItems: 'center',
-        marginBottom: 24,
-        position: 'relative',
+        flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
+        paddingTop: Platform.OS === 'ios' ? 50 : 20, paddingHorizontal: 16, paddingBottom: 16,
+        borderBottomWidth: 1, borderBottomColor: 'rgba(34, 197, 94, 0.1)', zIndex: 10,
     },
-    dragIndicator: {
-        width: 40,
-        height: 4,
-        backgroundColor: '#ddd',
-        borderRadius: 2,
-    },
-    dragIndicatorDark: {
-        backgroundColor: '#444',
-    },
-    closeButton: {
-        position: 'absolute',
-        right: 0,
-        top: 0,
-        backgroundColor: 'rgba(150, 150, 150, 0.1)',
-        borderRadius: 16,
-        padding: 8,
-    },
-    stepContainer: {
-        flex: 1,
-        gap: 16,
-    },
-    title: {
-        fontSize: 28,
-    },
-    subtitle: {
-        opacity: 0.7,
-        marginBottom: 8,
-    },
-    input: {
-        backgroundColor: '#FFFFFF',
-        borderRadius: 16,
-        padding: 16,
-        fontSize: 18,
-        color: '#111827',
-        borderWidth: 1,
-        borderColor: '#E5E7EB',
-        minHeight: 120,
-        textAlignVertical: 'top',
-    },
-    inputDark: {
-        backgroundColor: '#1F2937',
-        color: '#F9FAFB',
-        borderColor: '#374151',
-    },
-    dateSelectorContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        backgroundColor: '#FFFFFF',
-        padding: 16,
-        borderRadius: 16,
-        borderWidth: 1,
-        borderColor: '#E5E7EB',
-        marginTop: 8,
-    },
-    dateLabel: {
-        fontSize: 16,
-        fontWeight: '500',
-        color: '#374151',
-    },
-    datePickerButton: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 8,
-        backgroundColor: 'rgba(10, 126, 164, 0.1)',
-        paddingHorizontal: 16,
-        paddingVertical: 8,
-        borderRadius: 12,
-    },
-    datePickerButtonText: {
-        color: '#0a7ea4',
-        fontSize: 16,
-        fontWeight: '600',
-    },
-    iosDatePicker: {
-        width: 130, // constrain width for iOS compact picker
-    },
-    footer: {
-        marginTop: 32,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-    },
-    charCount: {
-        opacity: 0.5,
-        fontSize: 14,
-    },
-    saveButton: {
-        backgroundColor: '#0a7ea4',
-        paddingHorizontal: 32,
-        paddingVertical: 16,
-        borderRadius: 16,
-        alignItems: 'center',
-        justifyContent: 'center',
-        minWidth: 120,
-    },
-    saveButtonDisabled: {
-        opacity: 0.5,
-    },
-    saveButtonText: {
-        color: 'white',
-        fontSize: 16,
-        fontWeight: '600',
-    },
+    headerBtn: { width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center' },
+    headerBtnRight: { paddingHorizontal: 8, paddingVertical: 8 },
+    headerTitle: { fontFamily: 'Inter_700Bold', fontSize: 16, letterSpacing: -0.5 },
+    headerSave: { fontFamily: 'Inter_700Bold', fontSize: 16, color: '#22c55e' },
+
+    keyboardView: { flex: 1 },
+    scrollContent: { padding: 16, paddingBottom: 40, gap: 24 },
+
+    introSection: { paddingTop: 8 },
+    title: { fontFamily: 'Inter_700Bold', fontSize: 28, lineHeight: 34 },
+    subtitle: { fontFamily: 'Inter_400Regular', fontSize: 16, marginTop: 4 },
+
+    card: { borderRadius: 16, padding: 20, borderWidth: 1 },
+    lightCard: { backgroundColor: '#ffffff', borderColor: 'rgba(34, 197, 94, 0.05)', shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.05, shadowRadius: 2, elevation: 1 },
+    darkCard: { backgroundColor: 'rgba(34, 197, 94, 0.05)', borderColor: 'rgba(34, 197, 94, 0.05)' },
+
+    label: { fontFamily: 'Inter_600SemiBold', fontSize: 12, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 8 },
+
+    input: { height: 56, borderRadius: 12, paddingHorizontal: 16, fontFamily: 'Inter_500Medium', fontSize: 18 },
+    inputLight: { backgroundColor: '#f1f5f9', color: '#0f172a' },
+    inputDark: { backgroundColor: 'rgba(34, 197, 94, 0.1)', color: '#f8fafc' },
+
+    dateHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
+    datePreview: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+    datePreviewText: { fontFamily: 'Inter_700Bold', fontSize: 14, color: '#22c55e' },
+
+    datePickerButton: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', backgroundColor: 'rgba(34, 197, 94, 0.1)', paddingHorizontal: 16, paddingVertical: 12, borderRadius: 12 },
+    datePickerButtonText: { color: '#22c55e', fontSize: 16, fontFamily: 'Inter_600SemiBold' },
+
+    bottomActions: { marginTop: 16, gap: 12 },
+    primaryBtn: { height: 56, backgroundColor: '#22c55e', borderRadius: 16, alignItems: 'center', justifyContent: 'center', shadowColor: '#22c55e', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.2, shadowRadius: 8, elevation: 4 },
+    primaryBtnDisabled: { opacity: 0.5, shadowOpacity: 0 },
+    primaryBtnText: { fontFamily: 'Inter_700Bold', fontSize: 18, color: '#102212' },
+
+    secondaryBtn: { height: 56, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
+    secondaryBtnLight: { backgroundColor: '#e2e8f0' },
+    secondaryBtnDark: { backgroundColor: 'rgba(34, 197, 94, 0.1)' },
+    secondaryBtnText: { fontFamily: 'Inter_600SemiBold', fontSize: 16 },
 });

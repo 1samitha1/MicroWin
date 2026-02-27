@@ -1,4 +1,5 @@
 export interface User {
+  id: string;
   name?: string;
   username: string;
   password?: string;
@@ -6,6 +7,7 @@ export interface User {
 
 export interface Win {
   id: string;
+  userId: string;
   text: string;
   category?: string;
   timestamp: number;
@@ -14,6 +16,7 @@ export interface Win {
 
 export interface Target {
   id: string;
+  userId: string;
   text: string;
   createdAt: number;
   targetDate?: number;

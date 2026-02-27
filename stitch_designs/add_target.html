@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MicroWin - Add New Target</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13ec25",
+                        "background-light": "#f6f8f6",
+                        "background-dark": "#102212",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .ios-blur {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col font-display">
+<!-- Header / Top Bar -->
+<header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 ios-blur px-4 py-4 flex items-center justify-between border-b border-primary/10">
+<button class="flex items-center justify-center size-10 rounded-full hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400">close</span>
+</button>
+<h1 class="text-lg font-bold tracking-tight">Add New Target</h1>
+<button class="text-primary font-bold text-base px-2">Save</button>
+</header>
+<main class="flex-1 flex flex-col p-4 space-y-6 max-w-md mx-auto w-full">
+<!-- Welcome/Intro Section -->
+<section class="pt-2">
+<h2 class="text-3xl font-bold leading-tight">What's your next <span class="text-primary">MicroWin</span>?</h2>
+<p class="text-slate-500 dark:text-slate-400 mt-1">Small steps lead to big changes.</p>
+</section>
+<!-- Target Input Card -->
+<div class="bg-white dark:bg-primary/5 rounded-xl p-5 shadow-sm border border-primary/5">
+<label class="flex flex-col w-full">
+<span class="text-sm font-semibold text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wider">Target Name</span>
+<input class="form-input block w-full rounded-xl border-none bg-slate-100 dark:bg-primary/10 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-primary h-14 placeholder:text-slate-400 dark:placeholder:text-slate-600 px-4 text-lg font-medium" placeholder="e.g., Morning Walk" type="text"/>
+</label>
+</div>
+<!-- Date Picker Card -->
+<div class="bg-white dark:bg-primary/5 rounded-xl p-5 shadow-sm border border-primary/5">
+<div class="flex items-center justify-between mb-4">
+<span class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Set Deadline</span>
+<div class="flex items-center space-x-1 text-primary">
+<span class="material-symbols-outlined text-sm">calendar_today</span>
+<span class="text-sm font-bold">October 2023</span>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between px-2 mb-2">
+<button class="size-8 flex items-center justify-center rounded-full hover:bg-primary/20">
+<span class="material-symbols-outlined text-xl">chevron_left</span>
+</button>
+<p class="text-sm font-medium">October</p>
+<button class="size-8 flex items-center justify-center rounded-full hover:bg-primary/20">
+<span class="material-symbols-outlined text-xl">chevron_right</span>
+</button>
+</div>
+<div class="grid grid-cols-7 gap-1">
+<!-- Weekdays -->
+<div class="text-center text-[10px] font-bold text-slate-400 py-1">SUN</div>
+<div class="text-center text-[10px] font-bold text-slate-400 py-1">MON</div>
+<div class="text-center text-[10px] font-bold text-slate-400 py-1">TUE</div>
+<div class="text-center text-[10px] font-bold text-slate-400 py-1">WED</div>
+<div class="text-center text-[10px] font-bold text-slate-400 py-1">THU</div>
+<div class="text-center text-[10px] font-bold text-slate-400 py-1">FRI</div>
+<div class="text-center text-[10px] font-bold text-slate-400 py-1">SAT</div>
+<!-- Month Days (Sample) -->
+<div class="col-start-1 h-10 flex items-center justify-center text-sm font-medium text-slate-300 dark:text-slate-600">24</div>
+<div class="h-10 flex items-center justify-center text-sm font-medium text-slate-300 dark:text-slate-600">25</div>
+<div class="h-10 flex items-center justify-center text-sm font-medium text-slate-300 dark:text-slate-600">26</div>
+<div class="h-10 flex items-center justify-center text-sm font-medium text-slate-300 dark:text-slate-600">27</div>
+<div class="h-10 flex items-center justify-center text-sm font-medium text-slate-300 dark:text-slate-600">28</div>
+<div class="h-10 flex items-center justify-center text-sm font-medium text-slate-300 dark:text-slate-600">29</div>
+<div class="h-10 flex items-center justify-center text-sm font-medium text-slate-300 dark:text-slate-600">30</div>
+<button class="h-10 w-full flex items-center justify-center rounded-lg text-sm font-medium hover:bg-primary/10">1</button>
+<button class="h-10 w-full flex items-center justify-center rounded-lg text-sm font-medium hover:bg-primary/10">2</button>
+<button class="h-10 w-full flex items-center justify-center rounded-lg text-sm font-medium hover:bg-primary/10">3</button>
+<button class="h-10 w-full flex items-center justify-center rounded-lg text-sm font-medium hover:bg-primary/10">4</button>
+<button class="h-10 w-full flex items-center justify-center rounded-lg text-sm font-bold bg-primary text-background-dark shadow-lg shadow-primary/30">5</button>
+<button class="h-10 w-full flex items-center justify-center rounded-lg text-sm font-medium hover:bg-primary/10">6</button>
+<button class="h-10 w-full flex items-center justify-center rounded-lg text-sm font-medium hover:bg-primary/10">7</button>
+<button class="h-10 w-full flex items-center justify-center rounded-lg text-sm font-medium hover:bg-primary/10">8</button>
+<button class="h-10 w-full flex items-center justify-center rounded-lg text-sm font-medium hover:bg-primary/10">9</button>
+<button class="h-10 w-full flex items-center justify-center rounded-lg text-sm font-medium hover:bg-primary/10">10</button>
+<button class="h-10 w-full flex items-center justify-center rounded-lg text-sm font-medium hover:bg-primary/10">11</button>
+<button class="h-10 w-full flex items-center justify-center rounded-lg text-sm font-medium hover:bg-primary/10">12</button>
+<button class="h-10 w-full flex items-center justify-center rounded-lg text-sm font-medium hover:bg-primary/10">13</button>
+<button class="h-10 w-full flex items-center justify-center rounded-lg text-sm font-medium hover:bg-primary/10">14</button>
+<button class="h-10 w-full flex items-center justify-center rounded-lg text-sm font-medium hover:bg-primary/10">15</button>
+<button class="h-10 w-full flex items-center justify-center rounded-lg text-sm font-medium hover:bg-primary/10">16</button>
+</div>
+</div>
+</div>
+<!-- Options Card -->
+<div class="bg-white dark:bg-primary/5 rounded-xl p-1 shadow-sm border border-primary/5 divide-y divide-primary/5">
+<div class="flex items-center justify-between p-4">
+<div class="flex items-center space-x-3">
+<div class="size-10 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">notifications</span>
+</div>
+<div>
+<p class="font-semibold text-sm">Reminders</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">Get notified at 9:00 AM</p>
+</div>
+</div>
+<div class="w-12 h-6 bg-primary rounded-full relative">
+<div class="size-5 bg-white rounded-full absolute right-0.5 top-0.5 shadow-sm"></div>
+</div>
+</div>
+<div class="flex items-center justify-between p-4">
+<div class="flex items-center space-x-3">
+<div class="size-10 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">repeat</span>
+</div>
+<div>
+<p class="font-semibold text-sm">Repeat</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">Only once</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-slate-400">chevron_right</span>
+</div>
+</div>
+<!-- Floating Action Buttons for iOS feel -->
+<div class="pt-4 pb-8 flex flex-col space-y-3">
+<button class="w-full bg-primary text-background-dark h-14 rounded-xl font-bold text-lg shadow-xl shadow-primary/20 hover:scale-[1.02] transition-transform active:scale-95">
+                Create Target
+            </button>
+<button class="w-full h-14 rounded-xl font-semibold text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-primary/10 transition-colors">
+                Cancel
+            </button>
+</div>
+</main>
+<!-- Visual Polish / Floating Elements -->
+<div class="fixed -bottom-20 -left-20 size-64 bg-primary/10 rounded-full blur-3xl -z-10"></div>
+<div class="fixed top-1/4 -right-10 size-48 bg-primary/5 rounded-full blur-3xl -z-10"></div>
+</body></html>
